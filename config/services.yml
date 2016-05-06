@@ -1,0 +1,13 @@
+services:
+    cron.task.moderator_autosubscribe:
+        class: daphnetf\moderatorautosubscribe\cron\task\moderator_autosubscribe
+        arguments:
+            - %core.root_path%
+            - %core.php_ext%
+            - @config
+            - @dbal.conn
+            - @notification_manager
+        calls:
+            - [set_name, [daphnetf.moderatorautosubscribe.cron.task.moderator_autosubscribe]]
+        tags:
+            - { name: cron.task }
