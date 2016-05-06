@@ -1,27 +1,32 @@
 {
-	"name": "daphnetf/moderatorautosubscribe",
-	"type": "phpbb-extension",
-	"description": "Moderator autosubscribe Extension for phpBB 3.1. Copyright (c) 2016, University of Freiburg, Chair of Algorithms and Data Structures.",
-	"homepage": "https://daphne-dev.informatik.uni-freiburg.de/daphne",
-	"version": "0.9.9",
-	"time": "2016-05-06",
-	"license": "BSD-2-Clause",
-	"authors": [{
-			"name": "Axel Lehmann",
-			"email": "lehmann.4178656ch@gmail.com",
-			"homepage": "",
-			"role": "Lead Developer"
-		}],
-	"support": {
-		"irc": "irc://irc.freenode.org/daphnetf"
-	},
-	"require": {
-		"php": ">=5.5.9"
-	},
-	"extra": {
-		"display-name": "Moderator autosubscribe",
-		"soft-require": {
-			"phpbb/phpbb": ">=3.1.9,<3.2.*@dev"
-		}
-	}
+    "name": "daphnetf/moderatorautosubscribe",
+    "type": "phpbb-extension",
+    "description": "Moderator autosubscribe Extension for phpBB 3.1. Copyright (c) 2016, University of Freiburg, Chair of Algorithms and Data Structures.",
+    "homepage": "https://daphne-dev.informatik.uni-freiburg.de/daphne",
+    "version": "0.9.9",
+    "time": "2016-05-06",
+    "license": "BSD-2-Clause",
+    "authors": [{
+            "name": "Axel Lehmann",
+            "email": "lehmann.4178656ch@gmail.com",
+            "homepage": "",
+            "role": "Lead Developer"
+        }],
+    "support": {
+        "irc": "irc://irc.freenode.org/daphnetf"
+    },
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "extra": {
+        "display-name": "Moderator autosubscribe",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.1.9,<3.2.*@dev"
+        },
+        "version-check": {
+            "host": "raw.githubusercontent.com",
+            "directory": "/daphnetf/moderatorautosubscribe/master",
+            "filename": "version.json"
+        }
+    }
 }
