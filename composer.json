@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Moderator autosubscribe Extension for phpBB 3.1. Copyright (c) 2016, University of Freiburg, Chair of Algorithms and Data Structures.",
     "homepage": "https://github.com/daphnetf/moderatorautosubscribe",
-    "version": "1.0.0",
-    "time": "2016-05-06",
+    "version": "1.0.1",
+    "time": "2016-08-15",
     "license": "BSD-2-Clause",
     "authors": [{
             "name": "Axel Lehmann",
