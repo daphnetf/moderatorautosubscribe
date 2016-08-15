@@ -45,32 +45,21 @@ class moderator_autosubscribe extends \phpbb\cron\task\base
 		$this->notification_manager->add_subscription('notification.type.topic', $forum_id, 'notification.method.email', $user_id);
 		$this->notification_manager->add_subscription('notification.type.post', $forum_id, 'notification.method.email', $user_id);
 
-		$sql_array = array(
-			'SELECT'	=> 'fw.*',
+		$sql = "UPDATE " . FORUMS_WATCH_TABLE . "
+			SET notify_status = " . NOTIFY_YES . "
+			WHERE forum_id = " . $forum_id . "
+				AND user_id = " . $user_id;
+		$this->db->sql_query($sql);
 
-			'FROM'		=> array(
-				FORUMS_WATCH_TABLE	=> 'fw',
-			),
-			
-			'WHERE'		=> 'forum_id = ' . $forum_id . ' AND user_id = ' . $user_id,
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		if ($row = $this->db->sql_fetchrow($result)) {
-			$sql = "UPDATE " . FORUMS_WATCH_TABLE . "
-				SET notify_status = " . NOTIFY_YES . "
-				WHERE forum_id = " . $forum_id . "
-					AND user_id = " . $user_id;
-			$result2 = $this->db->sql_query($sql);
-			$this->db->sql_freeresult($result2);
-		} else {
+		if (!$this->db->sql_affectedrows()) {
+			print($user_id . '::' . $forum_id);
+			print("->INSERT");
 			$sql = "INSERT INTO " . FORUMS_WATCH_TABLE . "
 				(forum_id, user_id, notify_status)
 				VALUES (" . $forum_id . ", " . $user_id . ", " . NOTIFY_YES . ")";
-			$result2 = $this->db->sql_query($sql);
-			$this->db->sql_freeresult($result2);
+			$this->db->sql_query($sql);
+			print("\n");
 		}
-		$this->db->sql_freeresult($result);
 	}
 
 	/**
