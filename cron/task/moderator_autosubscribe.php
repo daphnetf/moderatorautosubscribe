@@ -69,49 +69,35 @@ class moderator_autosubscribe extends \phpbb\cron\task\base
 	*/
 	public function run()
 	{
-		$sql_array = array(
-			'SELECT'	=> 'm.*',
-
-			'FROM'		=> array(
-				MODERATOR_CACHE_TABLE	=> 'm',
+		$sql_statements = array(
+			'group' => array(
+				'SELECT'	=> 'm.forum_id, ug.group_id, ug.user_id',
+				'FROM'		=> array(
+					MODERATOR_CACHE_TABLE	=> 'm',
+					USER_GROUP_TABLE		=> 'ug',
+				),
+				'WHERE'		=> 'm.group_id = ug.group_id',
+			),
+			'user' => array(
+				'SELECT'	=> 'm.forum_id, m.user_id',
+				'FROM'		=> array(
+					MODERATOR_CACHE_TABLE	=> 'm',
+				),
+				'WHERE'		=> 'm.group_id = 0',
 			),
 		);
 
-		// We query every forum here because for caching we should not have any parameter.
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql, 600);
+		foreach ($sql_statements as $key => $sql_array) {
+			// We query every forum here because for caching we should not have any parameter.
+			$sql = $this->db->sql_build_query('SELECT', $sql_array);
+			$result = $this->db->sql_query($sql, 600);
 
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$user_id = $row['user_id'];
-			$group_id = $row['group_id'];
-			$forum_id = $row['forum_id'];
-
-			if (is_numeric($group_id) && intval($group_id) > 0)
-			{
-				$sql_array = array(
-					'SELECT'	=> 'g.*',
-					
-					'FROM'		=> array(
-						USER_GROUP_TABLE	=> 'g',
-					),
-					
-					'WHERE'		=> 'g.group_id = '.$group_id,
-				);
-				$sql2 = $this->db->sql_build_query('SELECT', $sql_array);
-				$result2 = $this->db->sql_query($sql2);
-				while ($row2 = $this->db->sql_fetchrow($result2))
-				{
-					$this->subscribe_user($row2['user_id'], $row['forum_id']);
-				}
-				$this->db->sql_freeresult($result2);
-			}
-			else
+			while ($row = $this->db->sql_fetchrow($result))
 			{
 				$this->subscribe_user($row['user_id'], $row['forum_id']);
 			}
+			$this->db->sql_freeresult($result);
 		}
-		$this->db->sql_freeresult($result);
 		$this->config->set('moderator_autosubscribe_last_gc', time());
 	}
 
